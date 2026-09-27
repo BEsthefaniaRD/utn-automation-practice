@@ -18,6 +18,6 @@ test('Login with invalid credentials', async ({ page }) => {
     await page.fill('#user-name', 'invalid_user');  
     await page.fill('#password', 'invalid_password');
     await page.click('#login-button');
-    //await expect(page.locator('[data-test="error"]')).toBeVisible();
-    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await expect(page.locator('[data-test="error"]')).toBeVisible();
+    //await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
 });
