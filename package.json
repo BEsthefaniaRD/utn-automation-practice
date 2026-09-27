@@ -1,0 +1,23 @@
+{
+  "name": "utn-automation-practice",
+  "version": "1.0.0",
+  "description": "This is a practice exercise for an automation project for UTN.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BEsthefaniaRD/utn-automation-practice.git"
+  },
+  "keywords": [],
+  "author": "EsthefanIA",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BEsthefaniaRD/utn-automation-practice/issues"
+  },
+  "homepage": "https://github.com/BEsthefaniaRD/utn-automation-practice#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.3"
+  }
+}
