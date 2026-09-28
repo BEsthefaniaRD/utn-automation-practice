@@ -4,13 +4,21 @@ import { BasePage } from '../BasePage';
 export class InventoryPage extends BasePage {
   protected readonly url = 'https://www.saucedemo.com/inventory.html';
 
+  readonly inventoryList: Locator;
   readonly cartBadge: Locator;
   readonly cartLink: Locator;
 
   constructor(page: Page) {
     super(page);
+    this.inventoryList = page.locator('[data-test="inventory-list"]');
     this.cartBadge = page.locator('[data-test="shopping-cart-badge"]');
     this.cartLink = page.locator('[data-test="shopping-cart-link"]');
+  }
+
+  /** Espera a que la página esté abierta y el listado de productos visible. */
+  async expectLoaded(options?: { timeout?: number }): Promise<void> {
+    await expect(this.page).toHaveURL(this.url, options);
+    await expect(this.inventoryList).toBeVisible(options);
   }
 
   /** Tarjeta de un producto del listado, buscada por su nombre. */
