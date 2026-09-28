@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices, type ReporterDescription } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -22,21 +22,33 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI
-    ? [
-        /* Marca los tests fallidos como anotaciones en GitHub Actions */
-        ['github'],
-        /* Salida en consola para los logs del job */
-        ['list'],
-        /* Reporte HTML que el workflow sube como artifact (sin abrir el navegador) */
-        ['html', { outputFolder: 'playwright-report', open: 'never' }],
-        /* Resultados en XML, compatibles con otras herramientas de CI */
-        ['junit', { outputFile: 'test-results/junit.xml' }],
-      ]
-    : [
-        ['list'],
-        ['html', { outputFolder: 'playwright-report', open: 'on-failure' }],
-      ],
+  reporter: [
+    ...(process.env.CI
+      ? ([
+          /* Marca los tests fallidos como anotaciones en GitHub Actions */
+          ['github'],
+          /* Salida en consola para los logs del job */
+          ['list'],
+          /* Reporte HTML que el workflow sube como artifact (sin abrir el navegador) */
+          ['html', { outputFolder: 'playwright-report', open: 'never' }],
+          /* Resultados en XML, compatibles con otras herramientas de CI */
+          ['junit', { outputFile: 'test-results/junit.xml' }],
+        ] satisfies ReporterDescription[])
+      : ([
+          ['list'],
+          ['html', { outputFolder: 'playwright-report', open: 'on-failure' }],
+        ] satisfies ReporterDescription[])),
+    /* Reporte QA (tabla con criterio, prioridad, resultado, responsable y fecha) en HTML y CSV */
+    [
+      './reporters/qa-report.ts',
+      {
+        outputFolder: 'qa-report',
+        titulo: 'Reporte de pruebas - UTN Automation Practice',
+        // En GitHub Actions usa el usuario que disparó el workflow.
+        responsable: process.env.QA_RESPONSABLE ?? process.env.GITHUB_ACTOR ?? 'BEsthefaniaRD',
+      },
+    ],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
