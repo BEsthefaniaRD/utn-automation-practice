@@ -46,3 +46,11 @@ jobs:
           name: junit-results
           path: test-results/junit.xml
           retention-days: 30
+
+      - name: Subir reporte QA
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: qa-report
+          path: qa-report/
+          retention-days: 30
